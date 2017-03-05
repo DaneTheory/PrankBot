@@ -10,7 +10,7 @@ const commands = require('./Commands')
 
 const permissions = require('./func/checkPermissions')
 
-const config = JSON.parse(require('../config.json'))
+const config = require('../config.json')
 
 //Message Event
 bot.on('message', message => {
@@ -32,13 +32,20 @@ bot.on('message', message => {
     let cmd = commands[command]
     
     //Check Permissions If Needed
-    if (permissions(cmd, message)) return
+    if (!permissions(cmd, message)) {
+        let role = typeof cmd.role === "string" ? cmd.role : typeof cmd.role === "number" ? message.guild.roles.get(cmd.role) ? message.guild.roles.get(cmd.role).name : "deleted_role" : "deleted_role"
+        return message.channel.sendMessage("**You lack the required role:** "+role)
+    }
 
+    try {
 
+        cmd.exec({ message, bot, args, suffix })
 
+    } catch(err) {
 
+        console.log(err)
 
-
+    }
 
 })
 
