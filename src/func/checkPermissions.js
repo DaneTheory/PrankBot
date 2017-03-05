@@ -9,6 +9,6 @@ module.exports = (cmd, message) => {
         if (message.member.roles.has(role.id)) return true
         else return false
 
-    } else return 
+    } else return true
 
 }

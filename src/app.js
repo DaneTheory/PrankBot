@@ -1,7 +1,7 @@
 /*Created Today*/
 
+//Init Bot
 const { Client } = require('discord.js')
-
 const bot = new Client()
 
 const prefix = "$"
@@ -11,6 +11,14 @@ const commands = require('./Commands')
 const permissions = require('./func/checkPermissions')
 
 const config = require('../config.json')
+
+//Extend with bandwidth
+const Bandwidth = require('node-bandwidth')
+bot.bw = new Bandwidth({
+    userId: config.user_id,
+    apiToken: config.api_token,
+    apiSecret: config.api_secret
+})
 
 //Message Event
 bot.on('message', message => {
@@ -24,7 +32,7 @@ bot.on('message', message => {
     let cutPrefix = message.content.slice(prefix.length)
     let args = cutPrefix.split(" ")
     let command = args[0]
-    args.slice(1)
+    args = args.slice(1)
     let suffix = args.join(" ")
 
     //Lets do Commands
@@ -47,6 +55,10 @@ bot.on('message', message => {
 
     }
 
+})
+
+bot.on('ready', () => {
+    console.log("ready")
 })
 
 bot.login(config.token)
