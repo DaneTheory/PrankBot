@@ -5,7 +5,7 @@ module.exports = {
 
     call: {
 
-        //role: "Prank Caller",
+        role: "Prank Caller",
         exec: ({
             message,
             bot,
@@ -13,7 +13,23 @@ module.exports = {
             suffix
         }) => {
 
-            createCall(message, suffix, bot)
+            if (message.member.voiceChannel) {
+
+                message.member.voiceChannel.join().then(connection => {
+
+                    createCall(message, suffix, bot, connection)
+
+                }).catch(() => message.channel.sendMessage("Unable to join voice channel."))
+
+                
+
+            } else {
+
+                message.channel.sendMessage("You must join a voice channel first")
+
+            }
+
+            
 
         }
 
