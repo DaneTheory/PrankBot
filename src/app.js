@@ -1,7 +1,9 @@
 /*Created Today*/
 
 //Init Bot
-const { Client } = require('discord.js')
+const {
+    Client
+} = require('discord.js')
 const bot = new Client()
 
 const prefix = "$"
@@ -12,12 +14,13 @@ const permissions = require('./func/checkPermissions')
 
 const config = require('../config.json')
 
-//Extend with bandwidth
-const Bandwidth = require('node-bandwidth')
-bot.bw = new Bandwidth({
-    userId: config.user_id,
-    apiToken: config.api_token,
-    apiSecret: config.api_secret
+//Nexmo
+const Nexmo = require('nexmo')
+bot.nexmo = new Nexmo({
+    apiKey: config.key,
+    apiSecret: config.secret,
+    applicationId: config.id,
+    privateKey: new Buffer(config.private_key)
 })
 
 //Message Event
@@ -38,18 +41,23 @@ bot.on('message', message => {
     //Lets do Commands
     if (!commands[command]) return
     let cmd = commands[command]
-    
+
     //Check Permissions If Needed
     if (!permissions(cmd, message)) {
         let role = typeof cmd.role === "string" ? cmd.role : typeof cmd.role === "number" ? message.guild.roles.get(cmd.role) ? message.guild.roles.get(cmd.role).name : "deleted_role" : "deleted_role"
-        return message.channel.sendMessage("**You lack the required role:** "+role)
+        return message.channel.sendMessage("**You lack the required role:** " + role)
     }
 
     try {
 
-        cmd.exec({ message, bot, args, suffix })
+        cmd.exec({
+            message,
+            bot,
+            args,
+            suffix
+        })
 
-    } catch(err) {
+    } catch (err) {
 
         console.log(err)
 

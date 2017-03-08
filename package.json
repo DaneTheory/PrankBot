@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/funnbot/PrankBot/issues"
   },
-  "homepage": "https://github.com/funnbot/PrankBot#readme"
+  "homepage": "https://github.com/funnbot/PrankBot#readme",
+  "dependencies": {
+    "nexmo": "^1.2.0",
+    "uws": "^0.13.0"
+  }
 }

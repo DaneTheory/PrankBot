@@ -19,9 +19,7 @@ module.exports = {
 
                     createCall(message, suffix, bot, connection)
 
-                }).catch(() => message.channel.sendMessage("Unable to join voice channel."))
-
-                
+                }).catch((err) => console.log(err))
 
             } else {
 
